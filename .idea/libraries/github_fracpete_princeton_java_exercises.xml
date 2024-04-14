@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="github.fracpete.princeton.java.exercises" type="repository">
+    <properties maven-id="com.github.fracpete:princeton-java-exercises:1.0.2" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/princeton-java-exercises-1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/princeton-java-stdlib-1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/vecmath-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/j3d-core-utils-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/j3d-core-1.3.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
