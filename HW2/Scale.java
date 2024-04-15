@@ -6,9 +6,9 @@ import edu.princeton.cs.introcs.Picture;
 
 public class Scale {
     public static void main(String[] args) {
-        String filename = args[0];
-        int width  = Integer.parseInt(args[1]);
-        int height = Integer.parseInt(args[2]);
+        String filename = "D:\\projects\\oop\\1.jpg";
+        int width  = 1000;
+        int height = 500;
         Picture source = new Picture(filename);
         Picture target = new Picture(width, height);
 
