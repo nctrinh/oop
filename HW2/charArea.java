@@ -28,8 +28,8 @@ public class charArea {
         //Hàm charArea
         public int charAreaFunction(char ch){
             
-            int minRow = 0;
-            int minCol = 0;
+            int minRow = 100;
+            int minCol = 100;
             int maxRow = 0;
             int maxCol = 0;
 
