@@ -1,58 +1,76 @@
 package B;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class Shape {
-    
-    double centerX;
-    double centerY;
+    //Center
+    Point center;
 
-    double r;
+    //Nearest point
+    Point nearestPoint;
 
-    double vertexX;
-    double vertexY;
-    TreeMap<Double, Double> vertices;
+    //R
+    double r = 9999;
 
+    //Array point
+    ArrayList<Point> vertices;
+
+    //Constructor
     Shape(String init){
 
-        vertices = new TreeMap<>();
         String[] tmp = init.split("\\s+");
-        r = 9999;
 
-        for(int i = 0; i < tmp.length - 1; i+=2){
+        int size = tmp.length;
+        vertices = new ArrayList<>();
+
+        double tmpCenterX = 0;
+        double tmpCenterY = 0;
+
+        double tmpNearestPointX = 0;
+        double tmpNearestPointY = 0;
+
+        for(int i = 0; i < size - 1; i+=2){
 
             double x = Double.parseDouble(tmp[i]);
             double y = Double.parseDouble(tmp[i + 1]);
-            vertices.put(x, y);
-            centerX += x;
-            centerY += y;
+            vertices.add(new Point(x, y));
+            tmpCenterX += x;
+            tmpCenterY += y;
+
         }
+        //Set value for center
+        double centerX = 2 * tmpCenterX / size;
+        double centerY = 2 * tmpCenterY / size;
+        center = new Point(centerX, centerY);
 
-        centerX = 2 * centerX / tmp.length;
-        centerY = 2 * centerY / tmp.length;
 
-        for(Map.Entry<Double, Double> entry : vertices.entrySet()){
-            if(Math.pow(Math.abs(entry.getKey() - centerX), 2) + Math.pow(Math.abs(entry.getValue() - centerY), 2) <= Math.pow(r, 2)){
-                r = Math.sqrt(Math.pow(Math.abs(entry.getKey() - centerX), 2) + Math.pow(Math.abs(entry.getValue() - centerY), 2));
-                vertexX = entry.getKey();
-                vertexY = entry.getValue();
+        for(Point p : vertices){
+            if(p.distanceTo(center) < r){
+                r = p.distanceTo(center);
+                tmpNearestPointX = p.x();
+                tmpNearestPointY = p.y();
             }
         }
+        
+        nearestPoint = new Point(tmpNearestPointX, tmpNearestPointY);
+
 
     }
 
     public boolean cut(Shape b){
         boolean in = false;
         boolean out = false;
-        double dis = Math.sqrt(Math.pow(Math.abs(centerX - b.centerX), 2) + Math.pow(Math.abs(centerY - b.centerY), 2));
+        Point centerOf_b = b.center;
+        double dis = centerOf_b.distanceTo(center);
         if(dis < r + b.r){
             in = true;
-            for(Map.Entry<Double, Double> entry : b.vertices.entrySet()){
-                double dis1 = Math.sqrt(Math.pow(Math.abs(entry.getKey() - centerX), 2) + Math.pow(Math.abs(entry.getValue() - centerY), 2));
-                if(dis1 > r){
+            for(Point p : b.vertices){
+                if(p.distanceTo(center) > r){
                     out = true;
+                    break;
                 }
             }
+
         }
         if(out && in){
             return true;
@@ -61,7 +79,7 @@ public class Shape {
     }
 
     public int encircles(Shape b){
-        double dis = Math.sqrt(Math.pow(Math.abs(centerX - b.centerX), 2) + Math.pow(Math.abs(centerY - b.centerY), 2));
+        double dis = b.center.distanceTo(center);
         if(dis < r){
             return 2;
         }

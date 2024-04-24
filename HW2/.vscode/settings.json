@@ -1,0 +1,6 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "d:\\projects\\Library\\princeton-java-stdlib-1.0.2.jar"
+    ]
+}
