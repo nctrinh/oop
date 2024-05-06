@@ -27,7 +27,7 @@ public class Screen {
         screen.add(myPanel);
         screen.pack();
         screen.setVisible(true);
-
+        
         myPanel.gameThreadStart();
 
     }

@@ -1,7 +1,6 @@
 package ChickenInvaders.main;
 
 import java.io.File;
-import java.net.URL;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -13,16 +12,19 @@ public class Sound {
 
     public Sound(){
         soundURL[0] = "D:\\projects\\oop\\BTL\\Sound\\laser_gun.wav";
-        // soundURL[1] = getClass().getResource();
-        // soundURL[2] = getClass().getResource();
-        // soundURL[3] = getClass().getResource();
+        soundURL[1] = "D:\\projects\\oop\\BTL\\Sound\\boom.wav";
+        soundURL[2] = "D:\\projects\\oop\\BTL\\Sound\\game_over.wav";
+        soundURL[3] = "D:\\projects\\oop\\BTL\\Sound\\HP++.wav";
+        soundURL[4] = "D:\\projects\\oop\\BTL\\Sound\\supply_bullet.wav";
+        soundURL[5] = "D:\\projects\\oop\\BTL\\Sound\\HP--.wav";
+        soundURL[6] = "D:\\projects\\oop\\BTL\\Sound\\background_music1.wav";
     }
 
     public void setFile(int i){
         try{
-            AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundURL[0]).getAbsoluteFile());
+            AudioInputStream ais = AudioSystem.getAudioInputStream(new File(soundURL[i]).getAbsoluteFile());
             clip = AudioSystem.getClip();
-            // clip.open(ais);  
+            clip.open(ais);  
         }catch(Exception e){
 
         }
@@ -38,6 +40,21 @@ public class Sound {
 
     public void stop(){
         clip.stop();
+    }
+
+    public void playMusic(int i){
+        setFile(i);
+        play();
+        loop();
+    }
+
+    public void stopMusic(){
+        stop();
+    }
+
+    public void playSE(int i){
+        setFile(i);
+        play();
     }
 
 }

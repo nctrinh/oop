@@ -5,14 +5,11 @@ import javax.swing.*;
 import ChickenInvaders.Object.Bullet;
 import ChickenInvaders.Object.SuperOBJ;
 import ChickenInvaders.Object.UFO;
-import ChickenInvaders.Object.repairKit;
-import ChickenInvaders.Object.supplyBullet;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.List;
 
 
@@ -52,10 +49,9 @@ public class Panel extends JPanel implements Runnable{
     Thread gameThread;
     Timer UfoSetter;
     Timer UfoShoot;
-    Timer setter;
+    AssetSetter setter;
 
     //Object
-    public SuperOBJ obj[] = new SuperOBJ[5];
     ArrayList<UFO> UFOs;
     ArrayList<Bullet> BulletUfo;
     ArrayList<Bullet> BulletPlane;
@@ -85,7 +81,7 @@ public class Panel extends JPanel implements Runnable{
         UFOs = new ArrayList<UFO>();
         BulletUfo = new ArrayList<Bullet>();
         BulletPlane = new ArrayList<Bullet>();
-        OBJs = new ArrayList<SuperOBJ>();
+        setter = new AssetSetter(this, sound);
         
         //Images
         backgroundImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\backGround.jpg").getImage();
@@ -110,16 +106,10 @@ public class Panel extends JPanel implements Runnable{
             }     
         });
 
-        setter = new Timer(Math.min(10000, Math.max(25000, (int)(Math.random() * 10000))), new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addOBJ();
-            }                
-        });
+        setter.setObject();
 
         UfoShoot.start();
         UfoSetter.start();
-        setter.start();
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -148,21 +138,9 @@ public class Panel extends JPanel implements Runnable{
             BulletUfo.add(tmp);
             UFOs.get(i).posY -= 10;
         }
-    }
-    // Add objs
-    public void addOBJ() {
-        Random random = new Random();
-        String obj_Name = string.get(random.nextInt(string.size()));
-        if(obj_Name == "bullet"){
-            supplyBullet bullet = new supplyBullet(Math.max(0, (int) (Math.random() * widthScreen) - 40));
-            OBJs.add(bullet);
-        }
-        if(obj_Name == "kit"){
-            repairKit kit = new repairKit(Math.max(0, (int) (Math.random() * widthScreen) - 40));
-            OBJs.add(kit);
-        }
+    } 
 
-    }   
+    
 
     @Override
     public void run() {
@@ -170,12 +148,15 @@ public class Panel extends JPanel implements Runnable{
         double delta = 0;
         double currentTime = 0;
         double lastTime = System.nanoTime();
-
+        if(gameThread != null){
+            sound.playMusic(6);
+        }
+        
         while(gameThread != null){
-            playMusic(0);
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime)/drawInterval;
             lastTime = currentTime;
+            
 
             while (delta >= 1) {
                 update();
@@ -183,9 +164,11 @@ public class Panel extends JPanel implements Runnable{
                 delta--;
             }
             if(gameOver){
+                sound.playSE(2);
                 gameThread = null;
             }
         }
+        sound.stopMusic();
     }
 
     // Update status and position
@@ -205,14 +188,14 @@ public class Panel extends JPanel implements Runnable{
             plane.planeX += plane.speed;
         }
         if(keyH.shoot && plane.bullet != 0){
-            int x = plane.planeX + plane.planeWidth/2;
-            int y = plane.planeY;
+            int x = plane.planeX + plane.planeWidth/2 - 6;
+            int y = plane.planeY - 10;
             Bullet tmp = new Bullet(bulletPlaneImage, x, y, -5);
             plane.bullet -= 1;
             BulletPlane.add(tmp);  
             plane.planeY += 10;     
             keyH.shoot = false; 
-            // playSE(0);  
+            sound.playSE(0);  
         }
         if(plane.planeY <= 0){
             plane.planeY = 0;
@@ -264,22 +247,12 @@ public class Panel extends JPanel implements Runnable{
                 BulletUfo.remove(tmp);
             }
         }
-
-        // Update Obj position and remove it when it disappear
-        for(int i = 0; i < OBJs.size(); i++){
-            SuperOBJ tmp = OBJs.get(i);
-            if(tmp != null){
-                tmp.posY +=  tmp.speed;
-                if(!tmp.checkOutScreen(heightScreen)){
-                    OBJs.remove(tmp);
-                }
-            }else{
-                OBJs.remove(tmp);
-            }
-        }
+        // Update OBJs's position
+        setter.update1();
 
         // HP--
         if(collision1(plane)){
+            sound.playSE(5);
             plane.HP -= 10;
         }
         // Remove Bullet_Plane and Score++ when Plane attack UFO
@@ -294,25 +267,8 @@ public class Panel extends JPanel implements Runnable{
             }
             
         }
-
-        // Update status when Plane get Kit or Bullet
-        for(int i = 0; i < OBJs.size(); i++){
-            SuperOBJ tmp = OBJs.get(i);
-            if(tmp == null){
-                OBJs.remove(tmp);
-            }else{
-                if(tmp.checkCollision1(plane)){
-                    OBJs.remove(tmp);
-                    if(tmp.name == "Repair Kit"){
-                        plane.HP = Math.min(100, plane.HP + 20);
-                    }
-                    if(tmp.name == "Supply Bullet"){
-                        plane.bullet = Math.min(50, plane.bullet + 20);
-                    }
-                }
-            }
-            
-        }
+        // Update plane's status when it get OBJs
+        setter.update2(plane);
 
         //Game over
         if(plane.HP <= 0){
@@ -355,6 +311,7 @@ public class Panel extends JPanel implements Runnable{
             if(tmp != null){
                 if(tmp.checkCollision2(bullet)){
                     UFOs.remove(tmp);
+                    sound.playSE(1);
                     score += 10;
                     return true;                  
                 }
@@ -408,31 +365,11 @@ public class Panel extends JPanel implements Runnable{
             }           
         }
 
-        // Draw Objs
-        for(int i = 0; i < OBJs.size(); i++){
-            SuperOBJ tmp = OBJs.get(i);
-            if(tmp != null){
-                tmp.draw(g2);
-            }           
-        }
+        setter.draw(g2);
 
         // Draw UI
         ui.draw(g2);
     }
 
-    public void playMusic(int i){
-        sound.setFile(i);
-        sound.play();
-        sound.loop();
-    }
-
-    public void stopMusic(){
-        sound.stop();
-    }
-
-    public void playSE(int i){
-        sound.setFile(i);
-        sound.play();
-    }
 
 }

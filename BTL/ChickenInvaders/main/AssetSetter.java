@@ -1,5 +1,6 @@
 package ChickenInvaders.main;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.awt.Graphics2D;
@@ -14,21 +15,21 @@ import ChickenInvaders.Object.supplyBullet;
 
 public class AssetSetter {
 
+    Sound sound;
     Panel panel;
-    public SuperOBJ[] OBJs ;   
-    final int size = 10;
-    public int index = 0;
+    ArrayList<SuperOBJ> OBJs;
     Timer setter;
-    private List<String> string = List.of("kit", "bullet","bullet", "kit", "bullet");
+    List<String> string = List.of("kit", "bullet","bullet", "kit", "bullet");
 
-    public AssetSetter(Panel panel){
+    public AssetSetter(Panel panel, Sound sound){
+        this.sound = sound;
         this.panel = panel;
-        OBJs = new SuperOBJ[size];      
+        OBJs = new ArrayList<SuperOBJ>();      
     }
 
     public void setObject(){
         
-        setter = new Timer(15000, new ActionListener() {
+        setter = new Timer(Math.min(10000, Math.max(25000, (int)(Math.random() * 10000))), new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addOBJ();
@@ -40,24 +41,57 @@ public class AssetSetter {
     private void addOBJ() {
         Random random = new Random();
         String obj_Name = string.get(random.nextInt(string.size()));
-        index = (index + 1) % 10;
         if(obj_Name == "bullet"){
             supplyBullet bullet = new supplyBullet(Math.max(0, (int) (Math.random() * panel.widthScreen) - 40));
-            OBJs[index] = bullet;
+            OBJs.add(bullet);
         }
         if(obj_Name == "kit"){
             repairKit kit = new repairKit(Math.max(0, (int) (Math.random() * panel.widthScreen) - 40));
-            OBJs[index] = kit;
+            OBJs.add(kit);
         }
-
     }    
-    public void update() {
-        OBJs[0].posX += OBJs[0].speed;
+    public void update1() {
+        for(int i = 0; i < OBJs.size(); i++){
+            SuperOBJ tmp = OBJs.get(i);
+            if(tmp != null){
+                tmp.posY +=  tmp.speed;
+                if(!tmp.checkOutScreen(panel.heightScreen)){
+                    OBJs.remove(tmp);
+                }
+            }else{
+                OBJs.remove(tmp);
+            }
+        }
     }
 
     public void draw(Graphics2D g2){
-        SuperOBJ tmp = OBJs[0];
-        g2.drawImage(tmp.image, tmp.posX, tmp.posY, tmp.width, tmp.height, null);
+        for(int i = 0; i < OBJs.size(); i++){
+            SuperOBJ tmp = OBJs.get(i);
+            if(tmp != null){
+                tmp.draw(g2);
+            }           
+        }
+    }
+    public void update2(Plane plane){
+        for(int i = 0; i < OBJs.size(); i++){
+            SuperOBJ tmp = OBJs.get(i);
+            if(tmp == null){
+                OBJs.remove(tmp);
+            }else{
+                if(tmp.checkCollision1(plane)){
+                    OBJs.remove(tmp);
+                    if(tmp.name == "Repair Kit"){
+                        sound.playSE(3);
+                        plane.HP = Math.min(100, plane.HP + 20);
+                    }
+                    if(tmp.name == "Supply Bullet"){
+                        sound.playSE(4);
+                        plane.bullet = Math.min(50, plane.bullet + 20);
+                    }
+                }
+            }
+            
+        }
     }
 
 }
