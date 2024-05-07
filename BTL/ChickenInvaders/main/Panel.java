@@ -24,10 +24,10 @@ public class Panel extends JPanel implements Runnable{
    
     //FPS and Score
     final int FPS = 80;
-    double score = 0;
+    int score = 0;
 
     //UI
-    public UI ui = new UI(this);
+    public UI ui;
 
     //gameOver
     public boolean gameOver = false;
@@ -77,6 +77,7 @@ public class Panel extends JPanel implements Runnable{
         this.addKeyListener(keyH);
 
         plane = new Plane(this);
+        ui = new UI(this, plane);
 
         UFOs = new ArrayList<UFO>();
         BulletUfo = new ArrayList<Bullet>();
@@ -162,13 +163,13 @@ public class Panel extends JPanel implements Runnable{
                 update();
                 repaint();
                 delta--;
+                
             }
             if(gameOver){
                 sound.playSE(2);
                 gameThread = null;
             }
         }
-        sound.stopMusic();
     }
 
     // Update status and position
