@@ -18,8 +18,8 @@ public class Sound {
         soundURL[4] = "D:\\projects\\oop\\BTL\\Sound\\supply_bullet.wav";
         soundURL[5] = "D:\\projects\\oop\\BTL\\Sound\\HP--.wav";
         soundURL[6] = "D:\\projects\\oop\\BTL\\Sound\\background_music1.wav";
-        soundURL[7] = "D:\\projects\\oop\\BTL\\Sound\\tittle2.wav";
-        soundURL[8] = "D:\\projects\\oop\\BTL\\Sound\\tittle1.wav";
+        soundURL[7] = "D:\\projects\\oop\\BTL\\Sound\\tittle1.wav";
+        soundURL[8] = "D:\\projects\\oop\\BTL\\Sound\\switch.wav";
     }
 
     public void setFile(int i){

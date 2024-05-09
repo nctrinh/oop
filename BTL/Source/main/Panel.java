@@ -151,7 +151,7 @@ public class Panel extends JPanel implements Runnable{
         double lastTime = System.nanoTime();
         
         gameState = titleState;
-        sound.playSE(8);
+        sound.playSE(7);
         while(gameThread != null){
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime)/drawInterval;
