@@ -1,4 +1,4 @@
-package ChickenInvaders.Object;
+package Source.Object;
 
 import javax.swing.ImageIcon;
 

@@ -1,4 +1,4 @@
-package ChickenInvaders.main;
+package Source.main;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +9,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
-import ChickenInvaders.Object.SuperOBJ;
-import ChickenInvaders.Object.repairKit;
-import ChickenInvaders.Object.supplyBullet;
+import Source.Object.SuperOBJ;
+import Source.Object.repairKit;
+import Source.Object.supplyBullet;
 
 public class AssetSetter {
 
     Sound sound;
     Panel panel;
+    Plane plane;
     ArrayList<SuperOBJ> OBJs;
     Timer setter;
     List<String> string = List.of("kit", "bullet","bullet", "kit", "bullet");
@@ -24,7 +25,7 @@ public class AssetSetter {
     public AssetSetter(Panel panel, Sound sound){
         this.sound = sound;
         this.panel = panel;
-        OBJs = new ArrayList<SuperOBJ>();      
+        OBJs = new ArrayList<SuperOBJ>();   
     }
 
     public void setObject(){
@@ -37,6 +38,9 @@ public class AssetSetter {
         });
         setter.start();
        
+    }
+    public void stop(){
+        setter.stop();
     }
     private void addOBJ() {
         Random random = new Random();
@@ -72,7 +76,7 @@ public class AssetSetter {
             }           
         }
     }
-    public void update2(Plane plane){
+    public void update2(Plane plane, UI ui){
         for(int i = 0; i < OBJs.size(); i++){
             SuperOBJ tmp = OBJs.get(i);
             if(tmp == null){
@@ -83,10 +87,12 @@ public class AssetSetter {
                     if(tmp.name == "Repair Kit"){
                         sound.playSE(3);
                         plane.HP = Math.min(100, plane.HP + 20);
+                        ui.showMessage("You got an Repair Kit");
                     }
                     if(tmp.name == "Supply Bullet"){
                         sound.playSE(4);
                         plane.bullet = Math.min(50, plane.bullet + 20);
+                        ui.showMessage("You got a Supply Bullet");
                     }
                 }
             }

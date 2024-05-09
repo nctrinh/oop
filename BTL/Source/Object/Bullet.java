@@ -1,4 +1,4 @@
-package ChickenInvaders.Object;
+package Source.Object;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;

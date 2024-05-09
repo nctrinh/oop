@@ -1,9 +1,9 @@
-package ChickenInvaders.Object;
+package Source.Object;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import ChickenInvaders.main.Plane;
+import Source.main.Plane;
 
 
 public class SuperOBJ {

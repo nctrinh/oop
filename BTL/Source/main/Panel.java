@@ -1,10 +1,10 @@
-package ChickenInvaders.main;
+package Source.main;
 
 import javax.swing.*;
 
-import ChickenInvaders.Object.Bullet;
-import ChickenInvaders.Object.SuperOBJ;
-import ChickenInvaders.Object.UFO;
+import Source.Object.Bullet;
+import Source.Object.SuperOBJ;
+import Source.Object.UFO;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -73,7 +73,7 @@ public class Panel extends JPanel implements Runnable{
         this.setFocusable(true);
         this.setBackground(Color.black);
 
-        keyH = new KeyHandler();
+        keyH = new KeyHandler(this);
         this.addKeyListener(keyH);
 
         plane = new Plane(this);
@@ -86,7 +86,7 @@ public class Panel extends JPanel implements Runnable{
         
         //Images
         backgroundImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\backGround.jpg").getImage();
-        bulletPlaneImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\bulletPlane4.png").getImage();
+        // bulletPlaneImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\bulletPlane4.png").getImage();
 
     }
 
@@ -149,68 +149,65 @@ public class Panel extends JPanel implements Runnable{
         double delta = 0;
         double currentTime = 0;
         double lastTime = System.nanoTime();
-        if(gameThread != null){
-            sound.playMusic(6);
-        }
         
+        gameState = titleState;
+        sound.playSE(8);
         while(gameThread != null){
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime)/drawInterval;
-            lastTime = currentTime;
-            
-
+            lastTime = currentTime;    
             while (delta >= 1) {
                 update();
                 repaint();
-                delta--;
-                
+                delta--;     
             }
+            
             if(gameOver){
-                sound.playSE(2);
                 gameThread = null;
             }
+
         }
     }
 
     // Update status and position
     public void update(){
-
-        // Update position of plane
-        if (keyH.upPressed) {
-            plane.planeY -= plane.speed;
-        }
-        if (keyH.downPressed) {
-            plane.planeY += plane.speed;
-        }
-        if (keyH.leftPressed) {
-            plane.planeX -= plane.speed;
-        }
-        if (keyH.rightPressed) {
-            plane.planeX += plane.speed;
-        }
-        if(keyH.shoot && plane.bullet != 0){
-            int x = plane.planeX + plane.planeWidth/2 - 6;
-            int y = plane.planeY - 10;
-            Bullet tmp = new Bullet(bulletPlaneImage, x, y, -5);
-            plane.bullet -= 1;
-            BulletPlane.add(tmp);  
-            plane.planeY += 10;     
-            keyH.shoot = false; 
-            sound.playSE(0);  
-        }
-        if(plane.planeY <= 0){
-            plane.planeY = 0;
-        }
-        if(plane.planeY >= heightScreen - 100){
-            plane.planeY = heightScreen - 100;
-        }
-        if(plane.planeX <= 0){
-            plane.planeX = 0;
-        }
-        if(plane.planeX >= widthScreen - 80){
-            plane.planeX = widthScreen - 80;
-        }
         
+        if(gameState == titleState){
+            UfoSetter.stop();
+            UfoShoot.stop();
+            setter.stop();
+        }
+        else if(gameState == playState){
+            if(!UfoSetter.isRunning() && !UfoShoot.isRunning()){
+                UfoSetter.start();
+                UfoShoot.start();
+                setter.setObject();
+            }
+            // Update position of plane
+            plane.update(sound, keyH, BulletPlane);
+            
+            // Update OBJs
+            updateOBjs();
+            
+            // Update plane's status when it get OBJs
+            setter.update2(plane, ui);
+
+            //Game over
+            if(plane.HP <= 0){
+                gameOver = true;
+                sound.stopMusic();
+                sound.playSE(2);
+            }
+        }
+        else if(gameState == pauseState){
+            UfoSetter.stop();
+            UfoShoot.stop();
+            setter.stop();
+        }
+
+    }
+    
+    public void updateOBjs(){
         // Update UFO position and remove it when it disappear
         for(int i = 0; i < UFOs.size(); i++){
             UFO tmp = UFOs.get(i);
@@ -268,14 +265,6 @@ public class Panel extends JPanel implements Runnable{
             }
             
         }
-        // Update plane's status when it get OBJs
-        setter.update2(plane);
-
-        //Game over
-        if(plane.HP <= 0){
-            gameOver = true;
-        }
-
     }
 
     // HP-- when plane is attacked by UFO and Bullet_UFO
@@ -311,6 +300,7 @@ public class Panel extends JPanel implements Runnable{
             UFO tmp = UFOs.get(i);
             if(tmp != null){
                 if(tmp.checkCollision2(bullet)){
+                    tmp.defeated = true;
                     UFOs.remove(tmp);
                     sound.playSE(1);
                     score += 10;
@@ -337,39 +327,43 @@ public class Panel extends JPanel implements Runnable{
 
     // Draw function
     public void paintComponent(Graphics g){
-
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g;
-        // Draw backkground
-        g2.drawImage(backgroundImage, 0, 0, widthScreen, heightScreen, null);
-        // Draw plane
-        plane.draw(g2);
-        // Draw UFO
-        for(int i = 0; i < UFOs.size(); i++){
-            UFO tmp = UFOs.get(i);
-            if(tmp != null){
-                tmp.draw(g2);
-            }         
-        }
-        // Draw Bullet_UFO
-        for(int i = 0; i < BulletUfo.size(); i++){
-            Bullet tmp = BulletUfo.get(i);
-            if(tmp != null){
-                tmp.draw(g2);
-            }         
-        }   
-        // Draw Bullet_Plane
-        for(int i = 0; i < BulletPlane.size(); i++){
-            Bullet tmp = BulletPlane.get(i);
-            if(tmp != null){
-                tmp.draw(g2);
-            }           
-        }
+           Graphics2D g2 = (Graphics2D) g;
+        if(gameState == titleState){
+            ui.draw(g2);
+        }else{          
+            // Draw backkground
+            g2.drawImage(backgroundImage, 0, 0, widthScreen, heightScreen, null);
+            // Draw plane
+            plane.draw(g2);
+            // Draw UFO
+            for(int i = 0; i < UFOs.size(); i++){
+                UFO tmp = UFOs.get(i);
+                if(tmp != null){
+                    tmp.draw(g2);
+                }         
+            }
+            // Draw Bullet_UFO
+            for(int i = 0; i < BulletUfo.size(); i++){
+                Bullet tmp = BulletUfo.get(i);
+                if(tmp != null){
+                    tmp.draw(g2);
+                }         
+            }   
+            // Draw Bullet_Plane
+            for(int i = 0; i < BulletPlane.size(); i++){
+                Bullet tmp = BulletPlane.get(i);
+                if(tmp != null){
+                    tmp.draw(g2);
+                }           
+            }
 
-        setter.draw(g2);
+            setter.draw(g2);
 
-        // Draw UI
-        ui.draw(g2);
+            // Draw UI
+            ui.draw(g2);
+        }
+        
     }
 
 

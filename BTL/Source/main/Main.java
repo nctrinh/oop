@@ -1,11 +1,11 @@
-package ChickenInvaders.main;
+package Source.main;
 
 import java.awt.*;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-public class Screen {
+public class Main {
     public static void main(String[] args) {
 
         JFrame screen = new JFrame();
