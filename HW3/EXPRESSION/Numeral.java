@@ -1,7 +1,8 @@
 package EXPRESSION;
 
-public class Numeral extends Expression{
+public class Numeral implements Expression{
     private int value;
+    
     Numeral(int data){
         this.value = data;
     }

@@ -10,7 +10,10 @@ public class TestExpression {
     public void test1(){
         
         Square one  = new Square(new Numeral(2));
-        assertEquals(one.toString(), "4");
+        Numeral two = new Numeral(2);
+        Addition ans = new Addition(one, two);
+        assertEquals(ans.toString(), "2^2 + 2");
+        
     }
 
 }

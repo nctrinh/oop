@@ -65,6 +65,7 @@ public class Panel extends JPanel implements Runnable{
     public final int playState = 1;
     public final int pauseState = 2;
     public final int dialougeState = 3;
+    public final int dieState = 4;
 
     //Panel constructor
     Panel(){
@@ -163,7 +164,7 @@ public class Panel extends JPanel implements Runnable{
             }
             
             if(gameOver){
-                gameThread = null;
+                gameState = dieState;
             }
 
         }
@@ -204,7 +205,20 @@ public class Panel extends JPanel implements Runnable{
             UfoShoot.stop();
             setter.stop();
         }
-
+        else if(gameState == dieState){
+            UfoSetter.stop();
+            UfoShoot.stop();
+            setter.stop();
+            setter.OBJs.clear();
+            UFOs.clear();
+            BulletUfo.clear();
+            BulletPlane.clear();
+            plane.planeX = widthScreen / 2;
+            plane.planeY = heightScreen * 7 / 8;
+            plane.HP = 100;
+            plane.bullet = 50;
+            keyH.sound.stopMusic();
+        }
     }
     
     public void updateOBjs(){
@@ -250,7 +264,9 @@ public class Panel extends JPanel implements Runnable{
 
         // HP--
         if(collision1(plane)){
-            sound.playSE(5);
+            if(plane.HP > 10){
+                sound.playSE(5);
+            }           
             plane.HP -= 10;
         }
         // Remove Bullet_Plane and Score++ when Plane attack UFO
@@ -262,8 +278,7 @@ public class Panel extends JPanel implements Runnable{
                 if(collision2(tmp)){
                     BulletPlane.remove(tmp);
                 }
-            }
-            
+            }          
         }
     }
 

@@ -1,8 +1,7 @@
 package EXPRESSION;
 
-
-abstract class Expression {
-    public abstract String toString();
-    abstract int evaluate();
+public interface Expression {
+    public String toString();
+    public int evaluate();
 }
 

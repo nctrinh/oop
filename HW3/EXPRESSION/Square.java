@@ -1,16 +1,17 @@
 package EXPRESSION;
 
-public class Square extends Expression{
+
+public class Square implements Expression{
     Expression expression;
     Square(Expression expression){
         this.expression = expression;
     }
     @Override
     public String toString() {
-        return Integer.toString(this.evaluate());
+        return expression.toString() + "^2";
     }
-    @Override
-    int evaluate() {
+    @Override   
+    public int evaluate() {
         return expression.evaluate() * expression.evaluate();
     }
 }

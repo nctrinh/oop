@@ -30,6 +30,7 @@ public class Sound {
         }catch(Exception e){
 
         }
+        
     }
 
     public void play(){

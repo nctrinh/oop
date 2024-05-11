@@ -11,6 +11,7 @@ public class KeyHandler implements KeyListener{
 
     public boolean canShoot = true;
     public Panel panel;
+    public Sound sound = new Sound();
 
     public KeyHandler(Panel panel){
         this.panel = panel;
@@ -36,7 +37,7 @@ public class KeyHandler implements KeyListener{
                 if(panel.ui.cmd == 0){
                     panel.gameState = panel.playState;
                     panel.sound.stopMusic();
-                    panel.sound.playMusic(6);
+                    sound.playMusic(6);
                     canShoot = false;
                 }
                 if(panel.ui.cmd == 1){
@@ -85,9 +86,34 @@ public class KeyHandler implements KeyListener{
             if (code == KeyEvent.VK_SPACE){
                 if(panel.ui.cmd_ofPause == 0){
                     panel.gameState = panel.playState;
-                    canShoot = false;
                 }
                 if(panel.ui.cmd_ofPause == 1){
+                    System.exit(0);
+                }
+            }
+        }
+        if(panel.gameState == panel.dieState){
+            if(code == KeyEvent.VK_W){
+                panel.ui.cmd--;
+                if(panel.ui.cmd < 0){
+                    panel.ui.cmd = 1;
+                }
+            }
+            if(code == KeyEvent.VK_S){
+                panel.ui.cmd++;
+                if(panel.ui.cmd > 1){
+                    panel.ui.cmd = 0;
+                }
+            }
+            if (code == KeyEvent.VK_SPACE){
+                if(panel.ui.cmd == 0){
+                    if(!panel.sound.clip.isRunning()){
+                        panel.gameState = panel.playState;
+                        panel.gameOver = false;  
+                        sound.playMusic(6);
+                    }             
+                }
+                if(panel.ui.cmd == 1){
                     System.exit(0);
                 }
             }
