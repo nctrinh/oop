@@ -1,7 +1,10 @@
-package Source.main;
+package Source.main.KeyHandler;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import Source.main.Play.Panel;
+import Source.main.Sound.Sound;
 
 public class KeyHandler implements KeyListener{
 
@@ -111,6 +114,7 @@ public class KeyHandler implements KeyListener{
                         panel.gameState = panel.playState;
                         panel.gameOver = false;  
                         sound.playMusic(6);
+                        panel.score = 0;
                     }             
                 }
                 if(panel.ui.cmd == 1){

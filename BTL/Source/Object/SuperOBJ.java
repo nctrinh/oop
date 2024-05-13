@@ -3,7 +3,7 @@ package Source.Object;
 import java.awt.Graphics2D;
 import java.awt.Image;
 
-import Source.main.Plane;
+import Source.main.Player.Plane;
 
 
 public class SuperOBJ {

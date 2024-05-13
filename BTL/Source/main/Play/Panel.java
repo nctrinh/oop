@@ -1,10 +1,16 @@
-package Source.main;
+package Source.main.Play;
 
 import javax.swing.*;
 
 import Source.Object.Bullet;
 import Source.Object.SuperOBJ;
 import Source.Object.UFO;
+import Source.main.AssetSetter.AssetSetter;
+import Source.main.KeyHandler.KeyHandler;
+import Source.main.LevelUP.LevelUpUFO;
+import Source.main.Player.Plane;
+import Source.main.Sound.Sound;
+import Source.main.UI.UI;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +30,10 @@ public class Panel extends JPanel implements Runnable{
    
     //FPS and Score
     final int FPS = 80;
-    int score = 0;
+    public int score = 0;
+    int Bullet_UFO_speed;
+    int spawnTime;
+    int shootTime;
 
     //UI
     public UI ui;
@@ -37,7 +46,7 @@ public class Panel extends JPanel implements Runnable{
     Image bulletPlaneImage;
 
     //Sound
-    Sound sound = new Sound();
+    public Sound sound = new Sound();
     
     //Key Handler
     KeyHandler keyH;
@@ -47,9 +56,11 @@ public class Panel extends JPanel implements Runnable{
 
     //Game Thread
     Thread gameThread;
-    Timer UfoSetter;
-    Timer UfoShoot;
+    public Timer UfoSetter;
+    public Timer UfoShoot;
     AssetSetter setter;
+    public LevelUpUFO levelUp_UFO;
+
 
     //Object
     ArrayList<UFO> UFOs;
@@ -84,32 +95,30 @@ public class Panel extends JPanel implements Runnable{
         BulletUfo = new ArrayList<Bullet>();
         BulletPlane = new ArrayList<Bullet>();
         setter = new AssetSetter(this, sound);
+        levelUp_UFO = new LevelUpUFO(this);
         
         //Images
         backgroundImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\backGround.jpg").getImage();
-        // bulletPlaneImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\bulletPlane4.png").getImage();
-
     }
 
     // Start function
     public void gameThreadStart(){
-
-        UfoSetter = new Timer(Math.min(1500, Math.max(4000, (int)(Math.random() * 5000))), new ActionListener() {
+        spawnTime = levelUp_UFO.spawnTimer;
+        UfoSetter = new Timer(spawnTime, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UFO_Setter();
             }     
         });
-
-        UfoShoot = new Timer(Math.min(1000, Math.max(2500, (int)(Math.random() * 1000))), new ActionListener() {
+        shootTime = levelUp_UFO.speedShoot;
+        UfoShoot = new Timer(shootTime, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UFO_Shoot();
             }     
         });
-
+        levelUp_UFO.startLevelUp();
         setter.setObject();
-
         UfoShoot.start();
         UfoSetter.start();
         gameThread = new Thread(this);
@@ -120,7 +129,7 @@ public class Panel extends JPanel implements Runnable{
 
         String UFO_file = "D:\\projects\\oop\\BTL\\Images\\UFO"+ (int)(Math.random() * 7) + ".png";
         Image UFO_image = new ImageIcon(UFO_file).getImage();
-        UFO tmp = new UFO(UFO_image);
+        UFO tmp = new UFO(UFO_image, levelUp_UFO.speedUFO);
         tmp.posX = Math.max(0, (int) (Math.random() * widthScreen) - tmp.width);
         UFOs.add(tmp);
 
@@ -136,13 +145,12 @@ public class Panel extends JPanel implements Runnable{
             }
             int posX = UFOs.get(i).posX + 34;
             int posY = UFOs.get(i).posY + 50;
-            Bullet tmp = new Bullet(Bullet_image, posX, posY, 4);       
+            Bullet tmp = new Bullet(Bullet_image, posX, posY, levelUp_UFO.speedBullet);       
             BulletUfo.add(tmp);
             UFOs.get(i).posY -= 10;
         }
     } 
-
-    
+   
 
     @Override
     public void run() {
@@ -177,12 +185,14 @@ public class Panel extends JPanel implements Runnable{
             UfoSetter.stop();
             UfoShoot.stop();
             setter.stop();
+            levelUp_UFO.stopLevelUp();
         }
         else if(gameState == playState){
             if(!UfoSetter.isRunning() && !UfoShoot.isRunning()){
                 UfoSetter.start();
                 UfoShoot.start();
                 setter.setObject();
+                levelUp_UFO.startLevelUp();
             }
             // Update position of plane
             plane.update(sound, keyH, BulletPlane);
@@ -204,6 +214,7 @@ public class Panel extends JPanel implements Runnable{
             UfoSetter.stop();
             UfoShoot.stop();
             setter.stop();
+            levelUp_UFO.stopLevelUp();
         }
         else if(gameState == dieState){
             UfoSetter.stop();
@@ -217,7 +228,10 @@ public class Panel extends JPanel implements Runnable{
             plane.planeY = heightScreen * 7 / 8;
             plane.HP = 100;
             plane.bullet = 50;
+            plane.levelUp_Player.score = 0;
             keyH.sound.stopMusic();
+            levelUp_UFO.restartLevelUp();
+            plane.levelUp_Player.restartLevelUp();
         }
     }
     
@@ -319,6 +333,7 @@ public class Panel extends JPanel implements Runnable{
                     UFOs.remove(tmp);
                     sound.playSE(1);
                     score += 10;
+                    plane.levelUp_Player.score += 10;
                     return true;                  
                 }
             }else{

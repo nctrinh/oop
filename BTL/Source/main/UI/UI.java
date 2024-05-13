@@ -1,4 +1,4 @@
-package Source.main;
+package Source.main.UI;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -7,6 +7,9 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+
+import Source.main.Play.Panel;
+import Source.main.Player.Plane;
 
 public class UI {
     
@@ -24,6 +27,8 @@ public class UI {
     Image tittleImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\tittle_background.png").getImage();
     Image pauseImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\pauseTittle.png").getImage();
     Image dieImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\dieState.png").getImage();
+    Image UFO_levelUp = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\UFO_levelUp.png").getImage();
+    Image Player_levelUP = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\levelUP_Player.png").getImage();
     int widthScreen;
     int heightScreen;
     public boolean messageOn = false;
@@ -31,8 +36,9 @@ public class UI {
     public int cmd = 0;
     public int cmd_ofPause = 0;
     private int messageCountTime = 0;
+    private int messageCountTime1 = 0;
 
-    UI(Panel panel, Plane plane){
+    public UI(Panel panel, Plane plane){
 
         this.plane = plane;
         this.panel = panel;
@@ -99,6 +105,34 @@ public class UI {
                 messageCountTime = 0;
                 messageOn = false;
             }
+        }
+        if(panel.levelUp_UFO.getUpgrade()){
+            if(panel.levelUp_UFO.countUpgrade <= 8){
+                g2.drawImage(UFO_levelUp, widthScreen * 405/1000, heightScreen / 35, widthScreen * 2/10, heightScreen * 9/100, null);
+                messageCountTime++;
+                if(messageCountTime > 150){
+                    messageCountTime = 0;
+                    panel.levelUp_UFO.setDefault();
+                    panel.levelUp_UFO.countUpgrade++;
+                }               
+            }
+        }
+        if(panel.plane.levelUp_Player.getUpgrade()){
+            if(panel.plane.levelUp_Player.countUpgrade < 8){
+                if(messageCountTime1 == 0){
+                    panel.sound.playSE(10);
+                    panel.plane.levelUp_Player.speedBullet = Math.max(panel.plane.levelUp_Player.speedBullet - 0.5, -8);
+                }
+                g2.drawImage(Player_levelUP, widthScreen * 123/1000, heightScreen * 1/ 100, widthScreen * 8/100, heightScreen * 8/100, null);
+                messageCountTime1++;
+                if(messageCountTime1 > 150){
+                    messageCountTime1 = 0;
+                    panel.plane.levelUp_Player.score = 0;
+                    panel.plane.levelUp_Player.countUpgrade++;
+                }
+            }
+            System.out.println("np");
+            System.out.println(plane.levelUp_Player.speedBullet);
         }
     }
 

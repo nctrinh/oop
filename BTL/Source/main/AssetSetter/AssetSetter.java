@@ -1,4 +1,4 @@
-package Source.main;
+package Source.main.AssetSetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,17 @@ import javax.swing.Timer;
 import Source.Object.SuperOBJ;
 import Source.Object.repairKit;
 import Source.Object.supplyBullet;
+import Source.main.Play.Panel;
+import Source.main.Player.Plane;
+import Source.main.Sound.Sound;
+import Source.main.UI.UI;
 
 public class AssetSetter {
 
     Sound sound;
     Panel panel;
     Plane plane;
-    ArrayList<SuperOBJ> OBJs;
+    public ArrayList<SuperOBJ> OBJs;
     Timer setter;
     List<String> string = List.of("kit", "bullet","bullet", "kit", "bullet");
 
@@ -30,7 +34,7 @@ public class AssetSetter {
 
     public void setObject(){
         
-        setter = new Timer(Math.min(10000, Math.max(25000, (int)(Math.random() * 10000))), new ActionListener() {
+        setter = new Timer(15000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 addOBJ();

@@ -17,7 +17,7 @@ public class Bullet extends SuperOBJ{
     
     public boolean defeated = false;
 
-    public Bullet(Image image, int posX, int posY, int speed){
+    public Bullet(Image image, int posX, int posY, double speed){
         name = "Bullet";
         width = 13;
         height = 45;

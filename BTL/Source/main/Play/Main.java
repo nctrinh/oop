@@ -1,4 +1,4 @@
-package Source.main;
+package Source.main.Play;
 
 import java.awt.*;
 

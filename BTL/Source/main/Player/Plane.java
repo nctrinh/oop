@@ -1,4 +1,4 @@
-package Source.main;
+package Source.main.Player;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -7,13 +7,17 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
 import Source.Object.Bullet;
+import Source.main.KeyHandler.KeyHandler;
+import Source.main.LevelUP.LevelUpPlayer;
+import Source.main.Play.Panel;
+import Source.main.Sound.Sound;
 
 public class Plane {
 
     Panel panel;
     public final int planeHeight = 70;
     public final int planeWidth = 80;
-
+    public LevelUpPlayer levelUp_Player;
 
     public int planeX;
     public int planeY;
@@ -25,13 +29,14 @@ public class Plane {
     Image imageBullet;
     
     //Constructor
-    Plane(Panel panel){
+    public Plane(Panel panel){
         this.panel = panel;
         planeX = panel.widthScreen / 2;
         planeY = panel.heightScreen * 7 / 8;
         speed = 4;
         HP = 100;
         bullet = 50;
+        levelUp_Player = new LevelUpPlayer(panel);
         imagePlane = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\jetplane.png").getImage();
         imageBullet = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\bulletPlane4.png").getImage();
     }
@@ -57,7 +62,7 @@ public class Plane {
         if(keyH.shoot && bullet != 0){
             int x = planeX + planeWidth/2 - 6;
             int y = planeY - 10;
-            Bullet tmp = new Bullet(imageBullet, x, y, -5);
+            Bullet tmp = new Bullet(imageBullet, x, y, levelUp_Player.speedBullet);
             bullet -= 1;
             BulletPlane.add(tmp);  
             planeY += 10;     
