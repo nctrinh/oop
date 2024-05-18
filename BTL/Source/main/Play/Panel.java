@@ -31,6 +31,8 @@ public class Panel extends JPanel implements Runnable{
     //FPS and Score
     final int FPS = 80;
     public int score = 0;
+
+    //UFO status
     int Bullet_UFO_speed;
     int spawnTime;
     int shootTime;
@@ -43,7 +45,6 @@ public class Panel extends JPanel implements Runnable{
 
     //Image
     Image backgroundImage;
-    Image bulletPlaneImage;
 
     //Sound
     public Sound sound = new Sound();

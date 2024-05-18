@@ -14,7 +14,6 @@ public class Main {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
     
-
         screen.setIconImage(iconGame.getImage());
         screen.setTitle("UFO Invaders");
         screen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

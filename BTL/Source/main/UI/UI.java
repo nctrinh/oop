@@ -21,6 +21,7 @@ public class UI {
     Font ofCMD;
     BufferedImage bulletImage;
     Plane plane;
+
     Image avatar = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Objects\\avt.png").getImage();
     Image status = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Objects\\status.png").getImage();
     Image score = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Objects\\score.png").getImage();
@@ -29,6 +30,7 @@ public class UI {
     Image dieImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\State\\dieState.png").getImage();
     Image UFO_levelUp = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Notification\\UFO_levelUp.png").getImage();
     Image Player_levelUP = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Notification\\levelUP_Player.png").getImage();
+    
     int widthScreen;
     int heightScreen;
     public boolean messageOn = false;
