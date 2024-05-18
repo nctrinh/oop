@@ -10,6 +10,6 @@ public class repairKit extends SuperOBJ{
         speed = 2;
         width = 45; 
         height = 45;
-        image = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\repairKit.png").getImage();
+        image = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Objects\\repairKit.png").getImage();
     }
 }

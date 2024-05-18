@@ -6,7 +6,7 @@ public class supplyBullet extends SuperOBJ{
     public supplyBullet(int posX){
         name = "Supply Bullet";
         posY = 0;
-        image = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\supplyBullet.png").getImage();
+        image = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Objects\\supplyBullet.png").getImage();
         speed = 2;
         width = 45;
         height = 45;

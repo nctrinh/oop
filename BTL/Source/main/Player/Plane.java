@@ -37,8 +37,8 @@ public class Plane {
         HP = 100;
         bullet = 50;
         levelUp_Player = new LevelUpPlayer(panel);
-        imagePlane = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\jetplane.png").getImage();
-        imageBullet = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\bulletPlane4.png").getImage();
+        imagePlane = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Player\\jetplane.png").getImage();
+        imageBullet = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\Player\\bulletPlane.png").getImage();
     }
 
     public void draw(Graphics2D g2){

@@ -98,7 +98,7 @@ public class Panel extends JPanel implements Runnable{
         levelUp_UFO = new LevelUpUFO(this);
         
         //Images
-        backgroundImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\backGround.jpg").getImage();
+        backgroundImage = new ImageIcon("D:\\projects\\oop\\BTL\\Images\\BackGround\\backGround.jpg").getImage();
     }
 
     // Start function
@@ -127,7 +127,7 @@ public class Panel extends JPanel implements Runnable{
     // UFO Setter
     public void UFO_Setter(){
 
-        String UFO_file = "D:\\projects\\oop\\BTL\\Images\\UFO"+ (int)(Math.random() * 7) + ".png";
+        String UFO_file = "D:\\projects\\oop\\BTL\\Images\\UFOs\\UFO"+ (int)(Math.random() * 7) + ".png";
         Image UFO_image = new ImageIcon(UFO_file).getImage();
         UFO tmp = new UFO(UFO_image, levelUp_UFO.speedUFO);
         tmp.posX = Math.max(0, (int) (Math.random() * widthScreen) - tmp.width);
@@ -138,7 +138,7 @@ public class Panel extends JPanel implements Runnable{
     public void UFO_Shoot(){       
         if(UFOs.size() > 0){
             int i = (int)(Math.random() * UFOs.size());
-            String Bullet_file = "D:\\projects\\oop\\BTL\\Images\\bulletUfo"+ (int)(Math.random() * 3) + ".png";
+            String Bullet_file = "D:\\projects\\oop\\BTL\\Images\\BulletUFO\\bulletUfo"+ (int)(Math.random() * 3) + ".png";
             Image Bullet_image = new ImageIcon(Bullet_file).getImage();
             while(UFOs.get(i) == null){
                 i = (int)(Math.random() * UFOs.size());
