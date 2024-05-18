@@ -15,13 +15,13 @@ public class LevelUpUFO {
     public boolean upgrade1;
     public boolean upgrade2;
     public int countUpgrade = 0;
-    Timer levelUpSpeed1;
+    Timer levelUpSpeed;
     Timer levelUpSpawn;
 
     Panel panel;
     public LevelUpUFO(Panel panel){
         this.panel = panel;
-        levelUpSpeed1 = new Timer(17500, new ActionListener() {
+        levelUpSpeed = new Timer(17500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 speedBullet = Math.min(speedBullet + 0.5, 8);
@@ -45,12 +45,12 @@ public class LevelUpUFO {
 
     public void startLevelUp(){
         levelUpSpawn.start();
-        levelUpSpeed1.start();
+        levelUpSpeed.start();
     }
 
     public void stopLevelUp(){
         levelUpSpawn.stop();
-        levelUpSpeed1.stop();
+        levelUpSpeed.stop();
     }
 
     public void restartLevelUp(){
@@ -58,7 +58,7 @@ public class LevelUpUFO {
         spawnTimer = 2000;
         speedShoot = 1500;
         levelUpSpawn.stop();
-        levelUpSpeed1.stop();
+        levelUpSpeed.stop();
     }
 
     public boolean getUpgrade(){

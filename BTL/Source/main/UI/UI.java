@@ -95,6 +95,7 @@ public class UI {
         g2.drawImage(score, widthScreen * 83/100, heightScreen / 35, 225, 115, null);
         g2.drawString(Integer.toString(panel.score), widthScreen * 9/10 - Integer.toString(panel.score).length() * 6, heightScreen / 8);
         
+        // Draw when plane get HP, bullet
         if(messageOn){
             g2.setColor(Color.white);
             g2.setFont(arial_plain_18);
@@ -106,6 +107,7 @@ public class UI {
                 messageOn = false;
             }
         }
+        // Draw when UFO upgrade
         if(panel.levelUp_UFO.getUpgrade()){
             if(panel.levelUp_UFO.countUpgrade <= 8){
                 g2.drawImage(UFO_levelUp, widthScreen * 405/1000, heightScreen / 35, widthScreen * 2/10, heightScreen * 9/100, null);
@@ -117,6 +119,7 @@ public class UI {
                 }               
             }
         }
+        //Draw when Player upgrade
         if(panel.plane.levelUp_Player.getUpgrade()){
             if(panel.plane.levelUp_Player.countUpgrade < 8){
                 if(messageCountTime1 == 0){
@@ -131,11 +134,9 @@ public class UI {
                     panel.plane.levelUp_Player.countUpgrade++;
                 }
             }
-            System.out.println("np");
-            System.out.println(plane.levelUp_Player.speedBullet);
         }
     }
-
+    // Draw titleState
     public void drawTittleState(Graphics2D g2){
         g2.drawImage(tittleImage, 0, 0, widthScreen, heightScreen,  null);
         if(cmd == 0){
@@ -148,7 +149,7 @@ public class UI {
             g2.drawString(">", widthScreen * 42 / 100, heightScreen * 76 / 100);
         }     
     }
-
+    // Draw pauseState
     public void drawPauseState(Graphics2D g2){
         g2.drawImage(pauseImage, widthScreen * 38/100, heightScreen * 2/10, widthScreen/4, heightScreen * 6/10, null);
         if(cmd_ofPause == 0){
@@ -161,7 +162,7 @@ public class UI {
             g2.drawString(">", widthScreen * 445 / 1000, heightScreen * 645 / 1000);
         }   
     }
-
+    // Draw dieState
     public void drawDieState(Graphics2D g2){
         g2.drawImage(dieImage, widthScreen * 38/100, heightScreen * 2/10, widthScreen/4, heightScreen * 6/10, null);
         g2.setColor(Color.white);

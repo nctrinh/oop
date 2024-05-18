@@ -388,6 +388,7 @@ public class Panel extends JPanel implements Runnable{
                 }           
             }
 
+            // Draw OBJs 
             setter.draw(g2);
 
             // Draw UI

@@ -62,7 +62,8 @@ public class KeyHandler implements KeyListener{
                 rightPressed = true;
             }
             if(code == KeyEvent.VK_SPACE && canShoot){
-                shoot = true;         
+                shoot = true; 
+                canShoot = false;        
             }
             if(code == KeyEvent.VK_P){
                 if(panel.gameState == panel.playState){
