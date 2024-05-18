@@ -63,7 +63,7 @@ public class AssetSetter {
             SuperOBJ tmp = OBJs.get(i);
             if(tmp != null){
                 tmp.posY +=  tmp.speed;
-                if(!tmp.checkOutScreen(panel.heightScreen)){
+                if(!tmp.check()){
                     OBJs.remove(tmp);
                 }
             }else{

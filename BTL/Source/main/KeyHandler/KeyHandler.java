@@ -9,9 +9,7 @@ import Source.main.Sound.Sound;
 public class KeyHandler implements KeyListener{
 
     public boolean upPressed, downPressed, leftPressed, rightPressed;
-
     public boolean shoot = false;
-
     public boolean canShoot = true;
     public Panel panel;
     public Sound sound = new Sound();
