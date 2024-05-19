@@ -21,15 +21,17 @@ public class LevelUpUFO {
     Panel panel;
     public LevelUpUFO(Panel panel){
         this.panel = panel;
-        levelUpSpeed = new Timer(17500, new ActionListener() {
+        levelUpSpeed = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 speedBullet = Math.min(speedBullet + 0.5, 8);
-                upgrade1 = true;
-                panel.sound.playSE(9);
+                upgrade1 = true;               
+                if(countUpgrade <= 8){
+                    panel.sound.playSE(9);
+                }               
             }          
         });
-        levelUpSpawn = new Timer(17500, new ActionListener() {
+        levelUpSpawn = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spawnTimer = Math.max(800, spawnTimer - 200);
