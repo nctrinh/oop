@@ -21,7 +21,7 @@ public class LevelUpUFO {
     Panel panel;
     public LevelUpUFO(Panel panel){
         this.panel = panel;
-        levelUpSpeed = new Timer(2000, new ActionListener() {
+        levelUpSpeed = new Timer(17500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 speedBullet = Math.min(speedBullet + 0.5, 8);
@@ -31,7 +31,7 @@ public class LevelUpUFO {
                 }               
             }          
         });
-        levelUpSpawn = new Timer(2000, new ActionListener() {
+        levelUpSpawn = new Timer(17500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 spawnTimer = Math.max(800, spawnTimer - 200);
